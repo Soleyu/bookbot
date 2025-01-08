@@ -4,21 +4,35 @@ def main():
     book_path = get_book()
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    character_number = character_count(text)
+    sortype = type_sort()
+    character_number = character_count(text, sortype)
     print_report(number_of_words, character_number, book_path[6:-4])
 
-def character_count(text):
+def character_count(text, sorttype):
     formated_text = text.lower()
     character_count= {}
     for char in formated_text:
         if char.isalpha():
             character_count[char] = character_count.get(char, 0) + 1
 
-
-    sorted_count = dict(sorted(character_count.items()))
-    return sorted_count
+    if sorttype == "a":
+        sorted_count = dict(sorted(character_count.items()))
+        return sorted_count
+    elif sorttype == "n":
+        sorted_count = dict(sorted(character_count.items(), key=lambda x: x[1], reverse=True))
+        return sorted_count
 
         
+def type_sort():
+    input_string = input("Would you like alphabetic sorting or numeric sorting of letters:")
+    input_string = input_string.lower()
+    selection = input_string[0]
+    if not selection.isalpha and (selection != "a" or selection != "n"):
+        print("Please choose a valdi sorting method")
+        exit(1)
+    else :
+        return selection
+    
 
 
 def get_text(path):
@@ -63,13 +77,17 @@ def get_book():
         if choice.isalpha():
             selected_book += choice + ".txt"
         else:
-            choice = int(choice[0:]) - 1
-            if choice > len(book_options) - 1:
-                print("No such option")
-                exit()
+            if choice.isnumeric():
+                choice = int(choice[0:]) - 1
+                if choice > len(book_options) - 1:
+                    print("No such option")
+                    exit()
+                else:
+                    choice_match = book_options[choice]
+                    selected_book += choice_match
             else:
-                choice_match = book_options[choice]
-                selected_book += choice_match
+                print("Please input a valid number")
+                exit(1)
 
 
 
