@@ -1,5 +1,7 @@
+import os
+
 def main():
-    book_path = "books/frankenstein.txt"
+    book_path = get_book()
     text = get_text(book_path)
     number_of_words = get_number_words(text)
     character_number = character_count(text)
@@ -7,9 +9,6 @@ def main():
 
 def character_count(text):
     formated_text = text.lower()
-    #non_characters = set()
-    #non_characters = {"[", "]",  '_', ",", '"', "'", ".", "\n", " ", "?", "1", "2", "3", "4", "5", "6", "7", "8","9", "0", "(", ")", "#", ":", "-", "*", ";", "!", "%", "/", "@", "$"}
-    #character_set = set()
     character_count= {}
     for char in formated_text:
         if char.isalpha():
@@ -23,8 +22,12 @@ def character_count(text):
 
 
 def get_text(path):
+    try:
         with open(path) as f:
             return f.read()
+    except Exception:
+        print("Please enter a valid number or book name")
+        exit(1)  # The number 1 indicates an error occurred
 
 def get_number_words(text):
     words = text.split()
@@ -38,6 +41,39 @@ def print_report(words, character_dict, book):
         print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
     print(print_text) 
 
+def get_book():
+    files = os.listdir("books")
+    book_list_print = ""
+    book_options = []
+    book_count = 0
+    selected_book = "books/"
+    if files == []:
+        print("There are no books in the book folder please add some in simple text" + "\n")
+    else:
+        print("These are the books available to process: \n \n")
+        for file in files:
+            book = file[:-4]
+            book_count += 1
+            book_list_print += f"{book_count}.- "
+            book_list_print += book + "\n" + "\n"
+            book_options.append(file)
+        print(book_list_print)
+
+        choice = input("Choose a book (You can choose with either the name or the number)")
+        if choice.isalpha():
+            selected_book += choice + ".txt"
+        else:
+            choice = int(choice[0:]) - 1
+            if choice > len(book_options) - 1:
+                print("No such option")
+                exit()
+            else:
+                choice_match = book_options[choice]
+                selected_book += choice_match
+
+
+
+    return selected_book
 
 
 main()
