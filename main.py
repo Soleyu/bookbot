@@ -27,13 +27,12 @@ def type_sort():
     input_string = input("Would you like alphabetic sorting or numeric sorting of letters:")
     input_string = input_string.lower()
     selection = input_string[0]
-    if not selection.isalpha and (selection != "a" or selection != "n"):
+    if not selection.isalpha() and (selection != "a" or selection != "n"):
         print("Please choose a valdi sorting method")
         exit(1)
     else :
         return selection
     
-
 
 def get_text(path):
     try:
