@@ -4,13 +4,14 @@ from stats import get_number_words
 from stats import character_count
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 main.py <path_to_book>")
-        sys.exit(1)
-    book_path = sys.argv[1]
+    print("Welcome to BookBOT \n")
+    if len(sys.argv) == 2:
+        book_path = sys.argv[1]
+    else:
+        book_path = get_book()
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    sortype = "n"
+    sortype = type_sort()
     character_number = character_count(text, sortype)
     print_report(number_of_words, character_number, book_path[6:-4])
         
@@ -38,8 +39,7 @@ def print_report(words, character_dict, book):
     print_text = title + "\n" + words_line + "\n" + "\n" + "\n"
     
     for item in character_dict:
-        #print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
-        print_text += f"{item}: {character_dict[item]}" + "\n"
+        print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
     print_text += "\nThanks for using BookBOT"
     print(print_text) 
 
@@ -52,7 +52,7 @@ def get_book():
     if files == []:
         print("There are no books in the book folder please add some in simple text" + "\n")
     else:
-        print("Welcome to BookBOT \nThese are the books available to process: \n \n")
+        print("These are the books available to process: \n \n")
         for file in files:
             book = file[:-4]
             book_count += 1
