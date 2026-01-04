@@ -1,12 +1,16 @@
+import sys
 import os
 from stats import get_number_words
 from stats import character_count
 
 def main():
-    book_path = get_book()
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    book_path = sys.argv[1]
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    sortype = type_sort()
+    sortype = "n"
     character_number = character_count(text, sortype)
     print_report(number_of_words, character_number, book_path[6:-4])
         
@@ -32,8 +36,10 @@ def print_report(words, character_dict, book):
     title = f"--- This is the report for the book {book} ---"
     words_line = f"The book had a total of {words} words"
     print_text = title + "\n" + words_line + "\n" + "\n" + "\n"
+    
     for item in character_dict:
-        print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
+        #print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
+        print_text += f"{item}: {character_dict[item]}" + "\n"
     print_text += "\nThanks for using BookBOT"
     print(print_text) 
 
