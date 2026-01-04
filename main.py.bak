@@ -2,10 +2,12 @@ import os
 from stats import get_number_words
 
 def main():
-    book_path = "books/frankenstein.txt"
+    book_path = get_book()
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    print("Found ",number_of_words," total words")
+    sortype = type_sort()
+    character_number = character_count(text, sortype)
+    print_report(number_of_words, character_number, book_path[6:-4])
 
 def character_count(text, sorttype):
     formated_text = text.lower()
