@@ -3,24 +3,22 @@ from stats import get_number_words
 from stats import character_count
 
 def main():
-    book_path = "books/frankenstein.txt"
+    book_path = get_book()
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    print("Found",number_of_words,"total words")
-    character_number = character_count(text)
-    print(character_number) 
-
-      
+    sortype = type_sort()
+    character_number = character_count(text, sortype)
+    print_report(number_of_words, character_number, book_path[6:-4])
+        
 def type_sort():
-    input_string = input("Would you like alphabetic sorting or numeric sorting of letters:")
+    input_string = input("Would you like alphabetic sorting or numeric sorting of letters \n")
     input_string = input_string.lower()
     selection = input_string[0]
     if not selection.isalpha() and (selection != "a" or selection != "n"):
-        print("Please choose a valdi sorting method")
+        print("Please choose a valid sorting method")
         exit(1)
     else :
-        return selection
-    
+        return selection    
 
 def get_text(path):
     try:
@@ -36,6 +34,7 @@ def print_report(words, character_dict, book):
     print_text = title + "\n" + words_line + "\n" + "\n" + "\n"
     for item in character_dict:
         print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
+    print_text += "\nThanks for using BookBOT"
     print(print_text) 
 
 def get_book():
@@ -47,7 +46,7 @@ def get_book():
     if files == []:
         print("There are no books in the book folder please add some in simple text" + "\n")
     else:
-        print("These are the books available to process: \n \n")
+        print("Welcome to BookBOT \nThese are the books available to process: \n \n")
         for file in files:
             book = file[:-4]
             book_count += 1
@@ -56,7 +55,7 @@ def get_book():
             book_options.append(file)
         print(book_list_print)
 
-        choice = input("Choose a book (You can choose with either the name or the number)")
+        choice = input("Choose a book (You can choose with either the name or the number) \n")
         if choice.isalpha():
             selected_book += choice + ".txt"
         else:
