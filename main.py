@@ -1,27 +1,16 @@
 import os
 from stats import get_number_words
+from stats import character_count
 
 def main():
     book_path = "books/frankenstein.txt"
     text = get_text(book_path)
     number_of_words = get_number_words(text)
     print("Found",number_of_words,"total words")
+    character_number = character_count(text)
+    print(character_number) 
 
-def character_count(text, sorttype):
-    formated_text = text.lower()
-    character_count= {}
-    for char in formated_text:
-        if char.isalpha():
-            character_count[char] = character_count.get(char, 0) + 1
-
-    if sorttype == "a":
-        sorted_count = dict(sorted(character_count.items()))
-        return sorted_count
-    elif sorttype == "n":
-        sorted_count = dict(sorted(character_count.items(), key=lambda x: x[1], reverse=True))
-        return sorted_count
-
-        
+      
 def type_sort():
     input_string = input("Would you like alphabetic sorting or numeric sorting of letters:")
     input_string = input_string.lower()
