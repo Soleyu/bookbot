@@ -5,23 +5,28 @@ from stats import character_count
 
 def main():
     print("Welcome to BookBOT \n")
-    if len(sys.argv) == 2:
-        book_path = sys.argv[1]
-    else:
-        book_path = get_book()
-    text = get_text(book_path)
-    number_of_words = get_number_words(text)
-    sortype = type_sort()
-    character_number = character_count(text, sortype)
-    print_report(number_of_words, character_number, book_path[6:-4])
-        
+    try:
+        if len(sys.argv) == 2:
+            book_path = sys.argv[1]
+        else:
+            book_path = get_book()
+        text = get_text(book_path)
+        number_of_words = get_number_words(text)
+        sortype = type_sort()
+        character_number = character_count(text, sortype)
+        print_report(number_of_words, character_number, book_path[6:-4])
+
+        return 0
+    except ValueError as e:
+        print(e)
+        return 1
+
 def type_sort():
     input_string = input("Would you like alphabetic sorting or numeric sorting of letters \n")
     input_string = input_string.lower()
     selection = input_string[0]
-    if not selection.isalpha() and (selection != "a" or selection != "n"):
-        print("Please choose a valid sorting method")
-        exit(1)
+    if selection not in ("a", "n"):
+        raise ValueError("Please choose a valid sorting method")
     else :
         return selection    
 
@@ -29,18 +34,17 @@ def get_text(path):
     try:
         with open(path) as f:
             return f.read()
-    except Exception:
-        print("Please enter a valid number or book name")
-        exit(1)  # The number 1 indicates an error occurred
+    except FileNotFoundError:
+        raise ValueError("Please enter a valid number or book name")
 
 def print_report(words, character_dict, book):
     title = f"--- This is the report for the book {book} ---"
     words_line = f"The book had a total of {words} words"
-    print_text = title + "\n" + words_line + "\n" + "\n" + "\n"
-    
-    for item in character_dict:
-        print_text += f"The letter {item} appeared a total of {character_dict[item]} times" + "\n"
-    print_text += "\nThanks for using BookBOT"
+    lines = [
+        f"The letter {char} appeared a total of {count} times"
+        for char, count in character_dict.items()
+    ]
+    print_text = title + "\n" + words_line + "\n\n" + "\n".join(lines) + "\n\nThanks for using BookBOT"
     print(print_text) 
 
 def get_book():
@@ -50,7 +54,7 @@ def get_book():
     book_count = 0
     selected_book = "books/"
     if files == []:
-        print("There are no books in the book folder please add some in simple text" + "\n")
+        raise ValueError("There are no books in the book folder please add some in simple text" + "\n")
     else:
         print("These are the books available to process: \n \n")
         for file in files:
@@ -68,18 +72,21 @@ def get_book():
             if choice.isnumeric():
                 choice = int(choice[0:]) - 1
                 if choice > len(book_options) - 1:
-                    print("No such option")
-                    exit()
+                    raise ValueError("No such option")
                 else:
                     choice_match = book_options[choice]
                     selected_book += choice_match
             else:
-                print("Please input a valid number")
-                exit(1)
+                raise ValueError("Please input a valid number")
 
 
 
     return selected_book
 
+if __name__ == "__main__":
+    sys.exit(main())
+
+
 
 main()
+
