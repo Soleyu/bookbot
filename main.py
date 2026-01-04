@@ -5,7 +5,7 @@ def main():
     book_path = "books/frankenstein.txt"
     text = get_text(book_path)
     number_of_words = get_number_words(text)
-    print("Found ",number_of_words," total words")
+    print("Found",number_of_words,"total words")
 
 def character_count(text, sorttype):
     formated_text = text.lower()
@@ -40,10 +40,6 @@ def get_text(path):
     except Exception:
         print("Please enter a valid number or book name")
         exit(1)  # The number 1 indicates an error occurred
-
-def get_number_words(text):
-    words = text.split()
-    return len(words)
 
 def print_report(words, character_dict, book):
     title = f"--- This is the report for the book {book} ---"
